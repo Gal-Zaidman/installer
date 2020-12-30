@@ -18,6 +18,7 @@ func validPlatform() *ovirt.Platform {
 		APIVIP:                 "10.0.0.1",
 		IngressVIP:             "10.0.0.3",
 		DefaultMachinePlatform: nil,
+		AffinityGroupsNames:    []string{"clusterAffinityGroup"},
 	}
 }
 
@@ -73,6 +74,15 @@ func TestValidatePlatform(t *testing.T) {
 			platform: func() *ovirt.Platform {
 				p := validPlatform()
 				p.VNICProfileID = "abcd-sdf"
+				return p
+			}(),
+			valid: false,
+		},
+		{
+			name: "invalid affinity Group name",
+			platform: func() *ovirt.Platform {
+				p := validPlatform()
+				p.AffinityGroupsNames = []string{""}
 				return p
 			}(),
 			valid: false,

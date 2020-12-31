@@ -327,8 +327,9 @@ func (m *Master) Generate(dependencies asset.Parents) error {
 			}
 		}
 	case ovirttypes.Name:
-		mpool := defaultOvirtMachinePoolPlatform()
+		mpool := defaultOvirtMachinePoolPlatform(clusterID.InfraID)
 		mpool.VMType = ovirttypes.VMTypeHighPerformance
+		mpool.AffinityGroupsNames = append(mpool.AffinityGroupsNames, clusterID.InfraID+"-ocp-masters")
 		mpool.Set(ic.Platform.Ovirt.DefaultMachinePlatform)
 		mpool.Set(pool.Platform.Ovirt)
 		pool.Platform.Ovirt = &mpool

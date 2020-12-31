@@ -33,10 +33,4 @@ type Platform struct {
 	// Default will set the image field to the latest RHCOS image.
 	// +optional
 	DefaultMachinePlatform *MachinePool `json:"defaultMachinePlatform,omitempty"`
-
-	// AffinityGroupsName contains the name of the RHV affinity group that will be created by the installer
-	// By default if will create 2 affinity groups with soft negative affinity,
-	// one for just the masters and one for the masters and workers
-	// +optional
-	AffinityGroupsNames []string `json:"affinityGroupsNames,omitempty"`
 }

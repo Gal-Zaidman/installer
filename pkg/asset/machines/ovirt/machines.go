@@ -65,13 +65,14 @@ func provider(platform *ovirt.Platform, pool *types.MachinePool, userDataSecret 
 			APIVersion: "ovirtproviderconfig.machine.openshift.io/v1beta1",
 			Kind:       "OvirtMachineProviderSpec",
 		},
-		UserDataSecret:    &corev1.LocalObjectReference{Name: userDataSecret},
-		CredentialsSecret: &corev1.LocalObjectReference{Name: "ovirt-credentials"},
-		TemplateName:      osImage,
-		ClusterId:         platform.ClusterID,
-		InstanceTypeId:    pool.Platform.Ovirt.InstanceTypeID,
-		MemoryMB:          pool.Platform.Ovirt.MemoryMB,
-		VMType:            string(pool.Platform.Ovirt.VMType),
+		UserDataSecret:      &corev1.LocalObjectReference{Name: userDataSecret},
+		CredentialsSecret:   &corev1.LocalObjectReference{Name: "ovirt-credentials"},
+		TemplateName:        osImage,
+		ClusterId:           platform.ClusterID,
+		InstanceTypeId:      pool.Platform.Ovirt.InstanceTypeID,
+		MemoryMB:            pool.Platform.Ovirt.MemoryMB,
+		VMType:              string(pool.Platform.Ovirt.VMType),
+		AffinityGroupsNames: pool.Platform.Ovirt.AffinityGroupsNames,
 	}
 	if pool.Platform.Ovirt.CPU != nil {
 		spec.CPU = &ovirtprovider.CPU{

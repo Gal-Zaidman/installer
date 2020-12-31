@@ -24,6 +24,10 @@ type MachinePool struct {
 	// +kubebuilder:validation:Enum="";desktop;server;high_performance
 	// +optional
 	VMType VMType `json:"vmType,omitempty"`
+
+	// AffinityGroupsNames contains the names of the RHV affinity groups that the machines will join
+	// +optional
+	AffinityGroupsNames []string `json:"affinityGroupsNames,omitempty"`
 }
 
 // Disk defines a VM disk
@@ -89,5 +93,9 @@ func (p *MachinePool) Set(required *MachinePool) {
 
 	if required.OSDisk != nil {
 		p.OSDisk = required.OSDisk
+	}
+
+	if required.AffinityGroupsNames != nil {
+		p.AffinityGroupsNames = required.AffinityGroupsNames
 	}
 }

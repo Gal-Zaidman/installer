@@ -304,6 +304,12 @@ spec:
                       description: Ovirt is the configuration used when installing
                         on oVirt.
                       properties:
+                        affinityGroupsNames:
+                          description: AffinityGroupsNames contains the names of the
+                            RHV affinity groups that the machines will join
+                          items:
+                            type: string
+                          type: array
                         cpu:
                           description: CPU defines the VM CPU.
                           properties:
@@ -655,6 +661,12 @@ spec:
                     description: Ovirt is the configuration used when installing on
                       oVirt.
                     properties:
+                      affinityGroupsNames:
+                        description: AffinityGroupsNames contains the names of the
+                          RHV affinity groups that the machines will join
+                        items:
+                          type: string
+                        type: array
                       cpu:
                         description: CPU defines the VM CPU.
                         properties:
@@ -1640,6 +1652,12 @@ spec:
                       define their own platform configuration. Default will set the
                       image field to the latest RHCOS image.
                     properties:
+                      affinityGroupsNames:
+                        description: AffinityGroupsNames contains the names of the
+                          RHV affinity groups that the machines will join
+                        items:
+                          type: string
+                        type: array
                       cpu:
                         description: CPU defines the VM CPU.
                         properties:

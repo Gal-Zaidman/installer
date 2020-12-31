@@ -30,8 +30,5 @@ func ValidatePlatform(p *ovirt.Platform, fldPath *field.Path) field.ErrorList {
 	if p.DefaultMachinePlatform != nil {
 		allErrs = append(allErrs, ValidateMachinePool(p.DefaultMachinePlatform, fldPath.Child("defaultMachinePlatform"))...)
 	}
-	if p.AffinityGroupsNames == nil {
-		allErrs = append(allErrs, ValidateAffinityGroup(p.AffinityGroupsNames, fldPath.Child("affinityGroupName"))...)
-	}
 	return allErrs
 }

@@ -485,7 +485,14 @@ func (t *TerraformVariables) Generate(parents asset.Parents) error {
 		if err != nil {
 			return err
 		}
-
+		workers, err := workersAsset.MachineSets()
+		if err != nil {
+			return err
+		}
+		workerConfigs := make([]*ovirtprovider.OvirtMachineProviderSpec, len(workers))
+		for i, w := range workers {
+			workerConfigs[i] = w.Spec.Template.Spec.ProviderSpec.Value.Object.(*ovirtprovider.OvirtMachineProviderSpec)
+		}
 		data, err := ovirttfvars.TFVars(
 			ovirttfvars.Auth{
 				URL:      config.URL,
@@ -500,6 +507,7 @@ func (t *TerraformVariables) Generate(parents asset.Parents) error {
 			string(*rhcosImage),
 			clusterID.InfraID,
 			masters[0].Spec.ProviderSpec.Value.Object.(*ovirtprovider.OvirtMachineProviderSpec),
+			workerConfigs,
 		)
 		if err != nil {
 			return errors.Wrapf(err, "failed to get %s Terraform variables", platform)

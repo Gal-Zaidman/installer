@@ -85,7 +85,7 @@ func SetInstallConfigDefaults(c *types.InstallConfig) {
 	case c.Platform.BareMetal != nil:
 		baremetaldefaults.SetPlatformDefaults(c.Platform.BareMetal, c)
 	case c.Platform.Ovirt != nil:
-		ovirtdefaults.SetPlatformDefaults(c.Platform.Ovirt, c)
+		ovirtdefaults.SetPlatformDefaults(c.Platform.Ovirt)
 	case c.Platform.Kubevirt != nil:
 		kubevirtdefaults.SetPlatformDefaults(c.Platform.Kubevirt)
 	case c.Platform.None != nil:

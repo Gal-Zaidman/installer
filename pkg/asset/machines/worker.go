@@ -120,7 +120,7 @@ func defaultBareMetalMachinePoolPlatform() baremetaltypes.MachinePool {
 	return baremetaltypes.MachinePool{}
 }
 
-func defaultOvirtMachinePoolPlatform() ovirttypes.MachinePool {
+func defaultOvirtMachinePoolPlatform(infraID string) ovirttypes.MachinePool {
 	return ovirttypes.MachinePool{
 		CPU: &ovirttypes.CPU{
 			Cores:   4,
@@ -131,6 +131,9 @@ func defaultOvirtMachinePoolPlatform() ovirttypes.MachinePool {
 			SizeGB: 120,
 		},
 		VMType: ovirttypes.VMTypeServer,
+		AffinityGroupsNames: []string{
+			infraID + "-ocp",
+		},
 	}
 }
 
@@ -386,7 +389,7 @@ func (w *Worker) Generate(dependencies asset.Parents) error {
 				machineSets = append(machineSets, set)
 			}
 		case ovirttypes.Name:
-			mpool := defaultOvirtMachinePoolPlatform()
+			mpool := defaultOvirtMachinePoolPlatform(clusterID.InfraID)
 			mpool.Set(ic.Platform.Ovirt.DefaultMachinePlatform)
 			mpool.Set(pool.Platform.Ovirt)
 			pool.Platform.Ovirt = &mpool

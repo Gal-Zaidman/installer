@@ -33,4 +33,16 @@ type Platform struct {
 	// Default will set the image field to the latest RHCOS image.
 	// +optional
 	DefaultMachinePlatform *MachinePool `json:"defaultMachinePlatform,omitempty"`
+
+	// AffinityGroupsNames contains the names of the RHV affinity groups that the machines will join
+	// +optional
+	AffinityGroups []*AffinityGroup `json:"affinityGroups"`
+}
+
+// AffinityGroup defines the affinity group that the installer will create
+type AffinityGroup struct {
+	Name        string `json:"name"`
+	Priority    int    `json:"priority"`
+	Description string `json:"description"`
+	Enforcing   bool   `json:"enforcing"`
 }

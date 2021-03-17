@@ -56,3 +56,8 @@ variable "ovirt_master_instance_type_id" {
   type        = string
   description = "master VM instance type ID"
 }
+
+variable "ovirt_master_affinity_groups" {
+  type        = list(string)
+  description = "master VMs affinity groups names"
+}

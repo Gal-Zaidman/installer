@@ -44,4 +44,11 @@ module "masters" {
   ovirt_master_memory           = var.ovirt_master_memory
   ovirt_master_vm_type          = var.ovirt_master_vm_type
   ovirt_master_os_disk_size_gb  = var.ovirt_master_os_disk_gb
+  ovirt_master_affinity_groups  = var.ovirt_master_affinity_groups
+}
+
+module "affinity_group" {
+  source                = "./affinity_group"
+  ovirt_cluster_id      = var.ovirt_cluster_id
+  ovirt_affinity_groups = var.ovirt_affinity_groups
 }

@@ -327,6 +327,13 @@ spec:
                       description: Ovirt is the configuration used when installing
                         on oVirt.
                       properties:
+                        affinityGroupsNames:
+                          description: AffinityGroupsNames contains the name of the
+                            OpenShift cluster affinity groups It will be used to add
+                            the newly created machine to existing affinity groups
+                          items:
+                            type: string
+                          type: array
                         cpu:
                           description: CPU defines the VM CPU.
                           properties:
@@ -691,6 +698,13 @@ spec:
                     description: Ovirt is the configuration used when installing on
                       oVirt.
                     properties:
+                      affinityGroupsNames:
+                        description: AffinityGroupsNames contains the name of the
+                          OpenShift cluster affinity groups It will be used to add
+                          the newly created machine to existing affinity groups
+                        items:
+                          type: string
+                        type: array
                       cpu:
                         description: CPU defines the VM CPU.
                         properties:
@@ -1708,6 +1722,28 @@ spec:
               ovirt:
                 description: Ovirt is the configuration used when installing on oVirt.
                 properties:
+                  affinityGroups:
+                    description: AffinityGroupsNames contains the names of the RHV
+                      affinity groups that the machines will join
+                    items:
+                      description: AffinityGroup defines the affinity group that the
+                        installer will create
+                      properties:
+                        description:
+                          type: string
+                        enforcing:
+                          type: boolean
+                        name:
+                          type: string
+                        priority:
+                          type: integer
+                      required:
+                      - description
+                      - enforcing
+                      - name
+                      - priority
+                      type: object
+                    type: array
                   api_vip:
                     description: APIVIP is an IP which will be served by bootstrap
                       and then pivoted masters, using keepalived
@@ -1718,6 +1754,13 @@ spec:
                       define their own platform configuration. Default will set the
                       image field to the latest RHCOS image.
                     properties:
+                      affinityGroupsNames:
+                        description: AffinityGroupsNames contains the name of the
+                          OpenShift cluster affinity groups It will be used to add
+                          the newly created machine to existing affinity groups
+                        items:
+                          type: string
+                        type: array
                       cpu:
                         description: CPU defines the VM CPU.
                         properties:

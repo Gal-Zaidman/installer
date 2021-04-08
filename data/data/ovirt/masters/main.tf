@@ -22,6 +22,7 @@ resource "ovirt_vm" "master" {
     interface = "virtio_scsi"
     size      = var.ovirt_master_os_disk_size_gb
   }
+  depends_on = [var.ovirt_bootstrap_vm_name, var.ovirt_affinity_group_name]
 }
 
 resource "ovirt_tag" "cluster_tag" {

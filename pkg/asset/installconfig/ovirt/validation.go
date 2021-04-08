@@ -72,33 +72,8 @@ func validateMachinePool(con *ovirtsdk.Connection, child *field.Path, pool *ovir
 // - oVirt cluster has sufficient resources to fulfil the affinity group constraints
 func validateAffinityGroups(ic *types.InstallConfig, fldPath *field.Path, con *ovirtsdk.Connection) field.ErrorList {
 	allErrs := field.ErrorList{}
-	allErrs = append(allErrs, validateAffinityGroupFields(*ic.Ovirt, fldPath)...)
 	allErrs = append(allErrs, validateExistingAffinityGroup(con, *ic.Ovirt, fldPath)...)
-	allErrs = append(allErrs, validateAffinityGroupDuplicate(ic.Ovirt.AffinityGroups)...)
 	allErrs = append(allErrs, validateClusterResources(con, ic, fldPath)...)
-
-	return allErrs
-}
-
-func validateAffinityGroupFields(platform ovirt.Platform, fldPath *field.Path) field.ErrorList {
-	allErrs := field.ErrorList{}
-	for _, ag := range platform.AffinityGroups {
-		if ag.Name == "" {
-			allErrs = append(
-				allErrs,
-				field.Invalid(fldPath, ag,
-					fmt.Sprintf("Invalid affinity group %v: name must be not empty", ag.Name)))
-		}
-		if ag.Priority < 0 || ag.Priority > 5 {
-			allErrs = append(
-				allErrs,
-				field.Invalid(fldPath, ag,
-					fmt.Sprintf(
-						"Invalid affinity group %v: priority value must be between 0-5 found priority %v",
-						ag.Name,
-						ag.Priority)))
-		}
-	}
 	return allErrs
 }
 
@@ -123,28 +98,6 @@ func validateExistingAffinityGroup(con *ovirtsdk.Connection, platform ovirt.Plat
 						fldPath,
 						ag,
 						fmt.Sprintf("affinity group %v already exist in cluster %v", agNew.Name, platform.ClusterID)))
-			}
-		}
-	}
-	return allErrs
-}
-
-// validateAffinityGroupDuplicate checks that there is no duplicated affinity group with different fields
-func validateAffinityGroupDuplicate(agList []*ovirt.AffinityGroup) field.ErrorList {
-	allErrs := field.ErrorList{}
-	for i, ag1 := range agList {
-		for _, ag2 := range agList[i+1:] {
-			if ag1.Name == ag2.Name {
-				if ag1.Priority != ag2.Priority ||
-					ag1.Description != ag2.Description ||
-					ag1.Enforcing != ag2.Enforcing {
-					allErrs = append(
-						allErrs,
-						&field.Error{
-							Type: field.ErrorTypeDuplicate,
-							BadValue: errors.Errorf("Error validating affinity groups: found same "+
-								"affinity group defined twice with different fields %v anf %v", ag1, ag2)})
-				}
 			}
 		}
 	}

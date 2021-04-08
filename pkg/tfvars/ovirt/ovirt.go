@@ -86,14 +86,14 @@ func TFVars(
 }
 
 func handleAffinityGroups(ags []*ovirt.AffinityGroup, infraID string) []map[string]interface{} {
-	var agMap []map[string]interface{}
-	for _, ag := range ags {
-		agMap = append(agMap, map[string]interface{}{
+	tfAffinityGroups := make([]map[string]interface{}, len(ags))
+	for i, ag := range ags {
+		tfAffinityGroups[i] = map[string]interface{}{
 			"name":        fmt.Sprintf("%s-%s", infraID, ag.Name),
-			"priority":    float64(ag.Priority),
+			"priority":    ag.Priority,
 			"description": ag.Description,
 			"enforcing":   ag.Enforcing,
-		})
+		}
 	}
-	return agMap
+	return tfAffinityGroups
 }

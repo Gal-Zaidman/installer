@@ -156,7 +156,7 @@ func (uninstaller *ClusterUninstaller) removeAffinityGroups(con *ovirtsdk.Connec
 		return err
 	}
 	for _, ag := range res.MustGroups().Slice() {
-		if strings.Contains(ag.MustName(), uninstaller.Metadata.InfraID) {
+		if strings.HasPrefix(ag.MustName(), fmt.Sprintf("%s-", uninstaller.Metadata.InfraID)) {
 			uninstaller.Logger.Infof("Removing AffinityGroup %s", ag.MustName())
 			_, err := affinityGroupService.GroupService(ag.MustId()).Remove().Send()
 			if err != nil {

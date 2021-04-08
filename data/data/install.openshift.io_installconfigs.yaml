@@ -1730,16 +1730,20 @@ spec:
                         installer will create
                       properties:
                         description:
+                          description: Description of the affinity group
                           type: string
                         enforcing:
+                          description: Enforcing whether to create a hard affinity
+                            rule, default is false
                           type: boolean
                         name:
+                          description: Name name of the affinity group
                           type: string
                         priority:
+                          description: Priority of the affinity group, needs to be
+                            between 1 (lowest) - 5 (highest)
                           type: integer
                       required:
-                      - description
-                      - enforcing
                       - name
                       - priority
                       type: object

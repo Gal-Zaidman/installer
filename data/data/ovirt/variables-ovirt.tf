@@ -4,6 +4,12 @@ variable "bootstrap_dns" {
   description = "Whether to include DNS entries for the bootstrap node or not."
 }
 
+variable "bootstrap" {
+  type = bool
+  default = true
+  description = "Create or destroy bootstrap resources"
+}
+
 variable "ovirt_url" {
   type        = string
   description = "The Engine URL"

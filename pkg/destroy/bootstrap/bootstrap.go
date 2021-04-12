@@ -81,14 +81,22 @@ func Destroy(dir string) (err error) {
 			return errors.Wrapf(err, "Failed to delete glance image %s", imageName)
 		}
 	case ovirt.Name:
-		extraArgs = append(extraArgs, "-target=module.template.ovirt_vm.tmp_import_vm")
-		extraArgs = append(extraArgs, "-target=module.template.ovirt_image_transfer.releaseimage")
 	}
 
-	extraArgs = append(extraArgs, "-target=module.bootstrap")
-	err = terraform.Destroy(tempDir, platform, extraArgs...)
-	if err != nil {
-		return errors.Wrap(err, "Terraform destroy")
+	switch platform {
+	case ovirt.Name:
+		// The oVirt code supports removing bootstrap resources gracefully via the bootstrap=false flag, no destroy is
+		// needed.
+		_, err = terraform.Apply(tempDir, platform, append(extraArgs, "-var=bootstrap=false")...)
+		if err != nil {
+			return errors.Wrap(err, "Terraform apply")
+		}
+	default:
+		extraArgs = append(extraArgs, "-target=module.bootstrap")
+		err = terraform.Destroy(tempDir, platform, extraArgs...)
+		if err != nil {
+			return errors.Wrap(err, "Terraform destroy")
+		}
 	}
 
 	tempStateFilePath := filepath.Join(dir, terraform.StateFileName+".new")

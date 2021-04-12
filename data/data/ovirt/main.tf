@@ -9,6 +9,7 @@ provider "ovirt" {
 
 module "template" {
   source                               = "./template"
+  bootstrap                            = var.bootstrap
   ovirt_cluster_id                     = var.ovirt_cluster_id
   ovirt_storage_domain_id              = var.ovirt_storage_domain_id
   ignition_bootstrap                   = var.ignition_bootstrap
@@ -21,6 +22,7 @@ module "template" {
 
 module "bootstrap" {
   source                               = "./bootstrap"
+  bootstrap                            = var.bootstrap
   ovirt_cluster_id                     = var.ovirt_cluster_id
   ovirt_template_id                    = module.template.releaseimage_template_id
   ovirt_tmp_template_vm_id             = module.template.tmp_import_vm
@@ -38,6 +40,7 @@ module "affinity_group" {
 
 module "masters" {
   source                        = "./masters"
+  bootstrap_ids                 = module.bootstrap.bootstrap_vms
   master_count                  = var.master_count
   ovirt_cluster_id              = var.ovirt_cluster_id
   ovirt_template_id             = module.template.releaseimage_template_id

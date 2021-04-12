@@ -22,6 +22,12 @@ resource "ovirt_vm" "master" {
     interface = "virtio_scsi"
     size      = var.ovirt_master_os_disk_size_gb
   }
+
+  lifecycle {
+    ignore_changes = [
+      template_id
+    ]
+  }
   depends_on = [var.ovirt_affinity_group_name]
 }
 

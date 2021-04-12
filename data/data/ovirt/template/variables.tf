@@ -1,3 +1,7 @@
+variable "bootstrap" {
+  description = "Create or destroy bootstrap resources"
+}
+
 variable "cluster_id" {
   description = "The ID of Openshift cluster"
 }

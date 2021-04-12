@@ -1,3 +1,7 @@
+variable "bootstrap_ids" {
+  description = "Unused variable to create a dependency on the bootstrap VM"
+}
+
 variable "cluster_id" {
   description = "The ID of Openshift cluster"
 }

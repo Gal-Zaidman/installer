@@ -33,7 +33,7 @@ locals {
 
 // upload the disk if we don't have an existing template
 resource "ovirt_image_transfer" "releaseimage" {
-  count             = length(local.existing_id) == 0 ? 1 : 0
+  count             = var.bootstrap?(length(local.existing_id) == 0 ? 1 : 0):0
   alias             = var.openstack_base_image_name
   source_url        = var.openstack_base_image_local_file_path
   storage_domain_id = var.ovirt_storage_domain_id
@@ -45,7 +45,7 @@ resource "ovirt_image_transfer" "releaseimage" {
 
 resource "ovirt_vm" "tmp_import_vm" {
   // create the vm for import only when we don't have an existing template
-  count      = length(local.existing_id) == 0 ? 1 : 0
+  count      = var.bootstrap?(length(local.existing_id) == 0 ? 1 : 0):0
   name       = "tmpvm-for-${ovirt_image_transfer.releaseimage.0.alias}"
   cluster_id = var.ovirt_cluster_id
   auto_start = false
@@ -67,7 +67,7 @@ resource "ovirt_vm" "tmp_import_vm" {
 }
 
 data "ovirt_vms" "tmp_import_vm_data" {
-  count = length(local.existing_id) == 0 ? 1 : 0
+  count = var.bootstrap?(length(local.existing_id) == 0 ? 1 : 0):0
   search = {
     criteria       = "name=tmpvm-for-${ovirt_image_transfer.releaseimage.0.alias}"
     case_sensitive = true
@@ -77,7 +77,7 @@ data "ovirt_vms" "tmp_import_vm_data" {
 
 resource "ovirt_template" "releaseimage_template" {
   // create the template only when we don't have an existing template
-  count = length(local.existing_id) == 0 ? 1 : 0
+  count = var.bootstrap?(length(local.existing_id) == 0 ? 1 : 0):0
   // name the template after the openshift cluster id
   name       = var.openstack_base_image_name
   cluster_id = data.ovirt_vms.tmp_import_vm_data.0.vms.0.cluster_id

@@ -51,7 +51,6 @@ module "masters" {
   ovirt_master_vm_type          = var.ovirt_master_vm_type
   ovirt_master_os_disk_size_gb  = var.ovirt_master_os_disk_gb
   ovirt_master_affinity_groups  = var.ovirt_master_affinity_groups
-  ovirt_bootstrap_vm_name       = module.bootstrap.ovirt_bootstrap_vm_name
   ovirt_affinity_group_name     = module.affinity_group.ovirt_affinity_group_name
 }
 
